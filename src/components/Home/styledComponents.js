@@ -5,3 +5,4 @@ export const HomeSidebarAndContentContainer = styled.div`
   justify-content: center;
   margin-top: 0px;
 `
+export const HomeContainer = styled.div``

@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 import {IoMdClose, IoIosSearch} from 'react-icons/io'
+import Loader from 'react-loader-spinner'
 
 export const HomeContentContainer = styled.div`
   width: 75%;
-  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#f4f4f4')};
+  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f9f9f9 ')};
   min-height: 100vh;
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -60,6 +61,8 @@ export const CrossIcon = styled(IoMdClose)`
 `
 export const SearchBarContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 20px;
   margin-left: 20px;
   border: 1px solid ${props => (props.isDarkTheme ? '#424242' : '#616e7c')};
@@ -71,8 +74,8 @@ export const SearchBarContainer = styled.div`
 export const SearchBarInput = styled.input`
   width: 90%;
   padding-left: 15px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   background-color: transparent;
   font-family: 'Roboto';
   font-size: 16px;
@@ -83,7 +86,7 @@ export const SearchBarInput = styled.input`
 
 export const SearchButton = styled.button`
   cursor: pointer;
-  padding: 6px 36px 6px 36px;
+  padding: 6px 30px 6px 30px;
   text-align: center;
   outline: none;
   background-color: ${props => (props.isDarkTheme ? '#313131' : '#f1f5f9')};
@@ -101,11 +104,56 @@ export const SearchIcon = styled(IoIosSearch)`
 
 export const HomeVideosListContainer = styled.ul`
   display: flex;
+  padding-left: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+`
+export const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+`
+
+export const LoaderSpinner = styled(Loader)``
+
+export const NoVideosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
 `
-export const HomeVideoListItem = styled.li`
-  list-style-type: none;
-  width: 20%;
-  border: 1px solid red;
+export const NoVideosImage = styled.img`
+  width: 40%;
+  margin-bottom: 15px;
+`
+
+export const NoVideosText = styled.h1`
+  font-family: 'Roboto';
+  font-size: 24px;
+  text-align: center;
+  color: ${props => (props.isDarkTheme ? '#ffffff' : '#181818')};
+  margin-bottom: 0px;
+`
+
+export const NoVideosDes = styled.p`
+  font-family: 'Roboto';
+  font-size: 18px;
+  color: #475569;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 25px;
+`
+
+export const NoVideosRetryButton = styled.button`
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+  font-family: 'Roboto';
+  background-color: #4f46e5;
+  padding: 10px 30px 10px 30px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
 `

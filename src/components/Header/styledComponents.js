@@ -4,7 +4,7 @@ import {FiLogOut} from 'react-icons/fi'
 import {GiHamburgerMenu} from 'react-icons/gi'
 
 export const NavbarHeader = styled.nav`
-  background-color: ${props => (props.isDarkTheme ? '#181818' : '#ffffff')};
+  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#ffffff')};
   display: flex;
   justify-content: center;
   align-items: center;

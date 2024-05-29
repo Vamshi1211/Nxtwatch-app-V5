@@ -9,7 +9,7 @@ export const SideBarNavContainer = styled.div`
   padding-left: 0px;
   min-height: 100vh;
   width: 25%;
-  background-color: ${props => (props.isDarkTheme ? '#181818' : '#ffffff')};
+  background-color: ${props => (props.isDarkTheme ? '#0f0f0f' : '#ffffff')};
   display: flex;
   flex-direction: column;
   justify-content: space-between;

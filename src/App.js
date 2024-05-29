@@ -3,6 +3,8 @@ import {Route, Switch} from 'react-router-dom'
 import ThemeContext from './context/ThemeContext'
 import LoginRoute from './components/LoginRoute'
 import Home from './components/Home'
+import VideoItemDetailsRoute from './components/VideoItemDetailsRoute'
+import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
 const sideBarMenu = [
@@ -30,7 +32,12 @@ class App extends Component {
       >
         <Switch>
           <Route exact path="/login" component={LoginRoute} />
-          <Route exact path="/" component={Home} />
+          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute
+            exact
+            path="/videos/:id"
+            component={VideoItemDetailsRoute}
+          />
         </Switch>
       </ThemeContext.Provider>
     )
