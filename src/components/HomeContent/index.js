@@ -21,6 +21,7 @@ import {
   NoVideosImage,
   NoVideosText,
   NoVideosDes,
+  NoVideoTryAgain,
   NoVideosRetryButton,
 } from './styledComponents'
 import ThemeContext from '../../context/ThemeContext'
@@ -179,7 +180,7 @@ class HomeContent extends Component {
       <NoVideosDes>
         We are having some trouble to complete your request.
       </NoVideosDes>
-      <NoVideosDes>Please try again.</NoVideosDes>
+      <NoVideoTryAgain>Please try again.</NoVideoTryAgain>
       <NoVideosRetryButton type="button" onClick={this.retryClicked}>
         Retry
       </NoVideosRetryButton>

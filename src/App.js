@@ -3,19 +3,22 @@ import {Route, Switch} from 'react-router-dom'
 import ThemeContext from './context/ThemeContext'
 import LoginRoute from './components/LoginRoute'
 import Home from './components/Home'
+import TrendingRoute from './components/TrendingRoute'
+import GamingRoute from './components/GamingRoute'
+import SavedRoute from './components/SavedRoute'
 import VideoItemDetailsRoute from './components/VideoItemDetailsRoute'
 import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
-const sideBarMenu = [
-  {displayId: 'HOME', displayText: 'Home'},
-  {displayId: 'TRENDING', displayText: 'Trending'},
-  {displayId: 'GAMING', displayText: 'Gaming'},
-  {displayId: 'SAVED', displayText: 'Saved Videos'},
-]
+// const sideBarMenu = [
+//   {displayId: 'HOME', displayText: 'Home'},
+//   {displayId: 'TRENDING', displayText: 'Trending'},
+//   {displayId: 'GAMING', displayText: 'Gaming'},
+//   {displayId: 'SAVED', displayText: 'Saved Videos'},
+// ]
 
 class App extends Component {
-  state = {isDarkTheme: false, activeId: sideBarMenu[0].displayId}
+  state = {isDarkTheme: false}
 
   themeChange = () => {
     this.setState(prevState => ({
@@ -33,6 +36,9 @@ class App extends Component {
         <Switch>
           <Route exact path="/login" component={LoginRoute} />
           <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute exact path="/trending" component={TrendingRoute} />
+          <ProtectedRoute exact path="/gaming" component={GamingRoute} />
+          <ProtectedRoute exact path="/saved-videos" component={SavedRoute} />
           <ProtectedRoute
             exact
             path="/videos/:id"

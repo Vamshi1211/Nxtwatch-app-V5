@@ -23,6 +23,7 @@ export const SideBarContainer = styled.ul`
   flex-direction: column;
   margin-top: 0px;
   padding-top: 20px;
+  padding-left: 0px;
   border: none;
   @media screen and (max-width: 768px) {
     display: none;
@@ -33,9 +34,28 @@ export const SideBarItem = styled.div`
   list-style-type: none;
   display: flex;
   align-items: center;
+  padding-left: 20px;
 
-  background-color: ${props => props.home && '#cbd5e1'};
-  background-color: ${props => props.home && props.isDarkTheme && ' #313131'};
+  background-color: ${props => props.home && props.path === '/' && '#cbd5e1'};
+  background-color: ${props =>
+    props.home && props.isDarkTheme && props.path === '/' && ' #313131'};
+`
+
+export const SideBarTrendingItem = styled(SideBarItem)`
+  background-color: ${props => props.path === '/trending' && '#cbd5e1'};
+  background-color: ${props =>
+    props.isDarkTheme && props.path === '/trending' && '#313131'};
+`
+
+export const SideBarGamingItem = styled(SideBarItem)`
+  background-color: ${props => props.path === '/gaming' && '#cbd5e1'};
+  background-color: ${props =>
+    props.isDarkTheme && props.path === '/gaming' && '#313131'};
+`
+export const SideBarSavedItem = styled(SideBarItem)`
+  background-color: ${props => props.path === '/saved-videos' && '#cbd5e1'};
+  background-color: ${props =>
+    props.isDarkTheme && props.path === '/saved-videos' && '#313131'};
 `
 
 export const SideBarText = styled.p`
@@ -48,7 +68,7 @@ export const SideBarText = styled.p`
 export const HomeIcon = styled(IoMdHome)`
   height: 30px;
   width: 40px;
-  color: ${props => (props.isdarktheme === 'true' ? '#ffffff' : '')};
+  color: ${props => (props.path === '/' ? '#ff0000' : '')};
 `
 
 export const NavLink = styled(Link)`
@@ -62,20 +82,20 @@ export const TrendingIcon = styled(FaFire)`
   height: 30px;
   width: 30px;
   margin-right: 10px;
-  color: ${props => (props.isdarktheme === 'true' ? '#ffffff' : '')};
+  color: ${props => (props.path === '/trending' ? '#ff0000' : '')};
 `
 
 export const GamingIcon = styled(GiGamepad)`
   height: 30px;
   width: 30px;
   margin-right: 10px;
-  color: ${props => (props.isdarktheme === 'true' ? '#ffffff' : '')};
+  color: ${props => (props.path === '/gaming' ? '#ff0000' : '')};
 `
 export const SavedIcon = styled(BiListPlus)`
   height: 30px;
   width: 30px;
   margin-right: 10px;
-  color: ${props => (props.isdarktheme === 'true' ? '#ffffff' : '')};
+  color: ${props => (props.path === '/saved-videos' ? '#ff0000' : '')};
 `
 
 export const FooterSection = styled.div`

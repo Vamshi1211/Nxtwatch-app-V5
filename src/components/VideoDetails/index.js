@@ -17,8 +17,31 @@ import {
   LikeIcon,
   DisLikeIcon,
   SavedIcon,
+  HorizontalLine,
+  VideoProfileInfoContainer,
+  VideoProfileImage,
+  VideoProfileTextContainer,
+  VideoChannelName,
+  VideoSubscriberCount,
+  VideoDescription,
+  VideoProfileAndLogoContainer,
+  VideoMobileDescription,
+  LoaderVideoContainer,
+  LoaderVideoSpinner,
+  DisLikeButton,
+  SavedButton,
+  LikeIconParagraph,
+  DisLikeParagraph,
+  SavedParagraph,
 } from './styledComponents'
-import {LoaderContainer, LoaderSpinner} from '../HomeContent/styledComponents'
+import ThemeContext from '../../context/ThemeContext'
+import {
+  NoVideosContainer,
+  NoVideosImage,
+  NoVideosText,
+  NoVideosDes,
+  NoVideosRetryButton,
+} from '../HomeContent/styledComponents'
 
 const apiStatusValue = {
   initial: 'INITIAL',
@@ -28,7 +51,13 @@ const apiStatusValue = {
 }
 
 class VideoDetails extends Component {
-  state = {apiStatus: apiStatusValue.initial, videoDetails: {}}
+  state = {
+    apiStatus: apiStatusValue.initial,
+    videoDetails: {},
+    isLike: false,
+    isDislike: false,
+    isSave: false,
+  }
 
   componentDidMount() {
     this.getVideoItemDetails()
@@ -68,28 +97,50 @@ class VideoDetails extends Component {
         videoDetails: updatedData,
         apiStatus: apiStatusValue.success,
       })
+    } else {
+      this.setState({apiStatus: apiStatusValue.failure})
     }
   }
 
   renderLoadingView = isDarkTheme => (
-    <LoaderContainer data-testid="loader">
-      <LoaderSpinner
+    <LoaderVideoContainer data-testid="loader">
+      <LoaderVideoSpinner
         color={isDarkTheme ? '#ffffff' : '#0f0f0f'}
         type="ThreeDots"
         height="50"
         width="50"
       />
-    </LoaderContainer>
+    </LoaderVideoContainer>
   )
 
-  renderVideoDetails = () => {
-    const {videoDetails} = this.state
-    const {description, viewCount, publishedAt} = videoDetails
+  likeButtonClicked = () => {
+    this.setState({
+      isLike: true,
+      isDislike: false,
+    })
+  }
+
+  disLikeButtonClicked = () => {
+    this.setState({
+      isLike: false,
+      isDislike: true,
+    })
+  }
+
+  saveButtonClicked = () => {
+    this.setState(prevState => ({
+      isSave: !prevState.isSave,
+    }))
+  }
+
+  renderVideoDetails = isDarkTheme => {
+    const {videoDetails, isLike, isDislike, isSave} = this.state
+    const {description, viewCount, publishedAt, channel, title} = videoDetails
     return (
       <>
         <VideoPlayer videoDetails={videoDetails} />
         <VideoPlayerTextContainer>
-          <VideoPlayerDes>{description}</VideoPlayerDes>
+          <VideoPlayerDes isDarkTheme={isDarkTheme}>{title}</VideoPlayerDes>
           <VideoPlayerViewsAndLikeContainer>
             <VideoPlayerViewAndDateContainer>
               <VideoPlayerViewListContainer>
@@ -104,39 +155,109 @@ class VideoDetails extends Component {
 
             <VideoPlayerLikesAndSaveContainer>
               <LikeDisLikeSaveContainer>
-                <LikeButton>
-                  <LikeIcon />
-                  <VideoPlayerParagraph>Like</VideoPlayerParagraph>
+                <LikeButton
+                  type="button"
+                  onClick={this.likeButtonClicked}
+                  isLike={isLike}
+                >
+                  <LikeIcon isLike={isLike} />
+                  <LikeIconParagraph isLike={isLike}>Like</LikeIconParagraph>
                 </LikeButton>
               </LikeDisLikeSaveContainer>
 
               <LikeDisLikeSaveContainer>
-                <LikeButton>
-                  <DisLikeIcon />
-                  <VideoPlayerParagraph>Like</VideoPlayerParagraph>
-                </LikeButton>
+                <DisLikeButton
+                  type="button"
+                  onClick={this.disLikeButtonClicked}
+                  isDislike={isDislike}
+                >
+                  <DisLikeIcon isDislike={isDislike} />
+                  <DisLikeParagraph isDislike={isDislike}>
+                    Dislike
+                  </DisLikeParagraph>
+                </DisLikeButton>
               </LikeDisLikeSaveContainer>
 
               <LikeDisLikeSaveContainer>
-                <LikeButton>
-                  <SavedIcon />
-                  <VideoPlayerParagraph>Like</VideoPlayerParagraph>
-                </LikeButton>
+                <SavedButton
+                  type="button"
+                  onClick={this.saveButtonClicked}
+                  isSave={isSave}
+                >
+                  <SavedIcon isSave={isSave} />
+                  <SavedParagraph isSave={isSave}>Save</SavedParagraph>
+                </SavedButton>
               </LikeDisLikeSaveContainer>
             </VideoPlayerLikesAndSaveContainer>
           </VideoPlayerViewsAndLikeContainer>
         </VideoPlayerTextContainer>
+        <HorizontalLine />
+        <VideoProfileInfoContainer>
+          <VideoProfileAndLogoContainer>
+            <VideoProfileImage
+              src={channel.profile_image_url}
+              alt="channel logo"
+            />
+            <VideoProfileTextContainer>
+              <VideoChannelName isDarkTheme={isDarkTheme}>
+                {channel.name}
+              </VideoChannelName>
+              <VideoSubscriberCount>
+                {channel.subscriber_count}
+              </VideoSubscriberCount>
+              <VideoDescription isDarkTheme={isDarkTheme}>
+                {description}
+              </VideoDescription>
+            </VideoProfileTextContainer>
+          </VideoProfileAndLogoContainer>
+          <VideoMobileDescription isDarkTheme={isDarkTheme}>
+            {description}
+          </VideoMobileDescription>
+        </VideoProfileInfoContainer>
       </>
     )
   }
 
-  renderViews = () => {
+  retryClicked = () => {
+    this.getVideoItemDetails()
+  }
+
+  renderFailureView = isDarkTheme => (
+    <NoVideosContainer>
+      {isDarkTheme ? (
+        <NoVideosImage
+          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png"
+          alt="failure"
+        />
+      ) : (
+        <NoVideosImage
+          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+          alt="failure"
+        />
+      )}
+
+      <NoVideosText isDarkTheme={isDarkTheme}>
+        Oops! Something Went Wrong
+      </NoVideosText>
+      <NoVideosDes>
+        We are having some trouble to complete your request.
+      </NoVideosDes>
+      <NoVideosDes>Please try again.</NoVideosDes>
+      <NoVideosRetryButton type="button" onClick={this.retryClicked}>
+        Retry
+      </NoVideosRetryButton>
+    </NoVideosContainer>
+  )
+
+  renderViews = isDarkTheme => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusValue.inProgress:
-        return this.renderLoadingView()
+        return this.renderLoadingView(isDarkTheme)
       case apiStatusValue.success:
-        return this.renderVideoDetails()
+        return this.renderVideoDetails(isDarkTheme)
+      case apiStatusValue.failure:
+        return this.renderFailureView(isDarkTheme)
       default:
         return null
     }
@@ -144,12 +265,17 @@ class VideoDetails extends Component {
 
   render() {
     return (
-      <>
-        <VideoItemContainer>
-          Hello
-          {this.renderViews()}
-        </VideoItemContainer>
-      </>
+      <ThemeContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+
+          return (
+            <VideoItemContainer isDarkTheme={isDarkTheme}>
+              {this.renderViews(isDarkTheme)}
+            </VideoItemContainer>
+          )
+        }}
+      </ThemeContext.Consumer>
     )
   }
 }

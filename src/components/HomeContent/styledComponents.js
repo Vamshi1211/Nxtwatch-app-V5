@@ -133,7 +133,7 @@ export const NoVideosText = styled.h1`
   font-size: 24px;
   text-align: center;
   color: ${props => (props.isDarkTheme ? '#ffffff' : '#181818')};
-  margin-bottom: 0px;
+  margin-bottom: 4px;
 `
 
 export const NoVideosDes = styled.p`
@@ -143,7 +143,12 @@ export const NoVideosDes = styled.p`
   font-weight: 500;
   line-height: 1.5;
   text-align: center;
-  margin-bottom: 25px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+`
+
+export const NoVideoTryAgain = styled(NoVideosDes)`
+  margin-top: 4px;
 `
 
 export const NoVideosRetryButton = styled.button`
@@ -156,4 +161,5 @@ export const NoVideosRetryButton = styled.button`
   border: none;
   border-radius: 8px;
   font-weight: 600;
+  margin-top: 25px;
 `

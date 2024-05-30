@@ -1,9 +1,13 @@
 import {Component} from 'react'
+import {withRouter} from 'react-router-dom'
 import ThemeContext from '../../context/ThemeContext'
 import {
   SideBarNavContainer,
   SideBarContainer,
   SideBarItem,
+  SideBarTrendingItem,
+  SideBarGamingItem,
+  SideBarSavedItem,
   SideBarText,
   HomeIcon,
   NavLink,
@@ -27,7 +31,7 @@ import {
 // ]
 
 class SideNavBar extends Component {
-  state = {home: false, trending: false, gaming: false, saved: false}
+  state = {home: true, trending: false, gaming: false, saved: false}
 
   homeClicked = () => {
     this.setState({home: true, trending: false, gaming: false, saved: false})
@@ -47,6 +51,8 @@ class SideNavBar extends Component {
 
   render() {
     const {home, trending, gaming, saved} = this.state
+    const {match} = this.props
+    const {path} = match
 
     return (
       <ThemeContext.Consumer>
@@ -61,38 +67,51 @@ class SideNavBar extends Component {
                     onClick={this.homeClicked}
                     home={home}
                     isDarkTheme={isDarkTheme}
+                    path={path}
                   >
-                    <HomeIcon isdarktheme={isDarkTheme.toString()} />
+                    <HomeIcon path={path} />
                     <SideBarText isDarkTheme={isDarkTheme}>Home</SideBarText>
                   </SideBarItem>
                 </NavLink>
 
                 <NavLink to="/trending">
-                  <SideBarItem
+                  <SideBarTrendingItem
                     onClick={this.trendingClicked}
                     trending={trending}
+                    isDarkTheme={isDarkTheme}
+                    path={path}
                   >
-                    <TrendingIcon isdarktheme={isDarkTheme.toString()} />
+                    <TrendingIcon trending={trending.toString()} path={path} />
                     <SideBarText isDarkTheme={isDarkTheme}>
                       Trending
                     </SideBarText>
-                  </SideBarItem>
+                  </SideBarTrendingItem>
                 </NavLink>
 
                 <NavLink to="/gaming">
-                  <SideBarItem onClick={this.gamingClicked} gaming={gaming}>
-                    <GamingIcon isdarktheme={isDarkTheme.toString()} />
+                  <SideBarGamingItem
+                    onClick={this.gamingClicked}
+                    gaming={gaming}
+                    isDarkTheme={isDarkTheme}
+                    path={path}
+                  >
+                    <GamingIcon gaming={gaming.toString()} path={path} />
                     <SideBarText isDarkTheme={isDarkTheme}>Gaming</SideBarText>
-                  </SideBarItem>
+                  </SideBarGamingItem>
                 </NavLink>
 
                 <NavLink to="/saved-videos">
-                  <SideBarItem onClick={this.savedClicked} saved={saved}>
-                    <SavedIcon isdarktheme={isDarkTheme.toString()} />
+                  <SideBarSavedItem
+                    onClick={this.savedClicked}
+                    saved={saved}
+                    isDarkTheme={isDarkTheme}
+                    path={path}
+                  >
+                    <SavedIcon saved={saved.toString()} path={path} />
                     <SideBarText isDarkTheme={isDarkTheme}>
                       Saved Videos
                     </SideBarText>
-                  </SideBarItem>
+                  </SideBarSavedItem>
                 </NavLink>
               </SideBarContainer>
               <FooterSection>
@@ -125,4 +144,4 @@ class SideNavBar extends Component {
   }
 }
 
-export default SideNavBar
+export default withRouter(SideNavBar)

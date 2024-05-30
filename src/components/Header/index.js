@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
-import {withRouter} from 'react-router-dom'
+import Popup from 'reactjs-popup'
+import {withRouter, Link} from 'react-router-dom'
 import ThemeContext from '../../context/ThemeContext'
 
 import {
@@ -17,7 +18,18 @@ import {
   ProfileImage,
   HamBurgerIconButton,
   LogoutIconButton,
+  PopupContainer,
+  PopupDisplayContainer,
+  PopupHeading,
+  PopupButtons,
+  CancelButton,
+  ConfirmButton,
 } from './styledComponents'
+
+const overlayStyles = {
+  backgroundColor: '#ffff',
+  width: '40vh',
+}
 
 const Header = props => {
   const logoutClicked = () => {
@@ -39,15 +51,19 @@ const Header = props => {
           <NavbarHeader isDarkTheme={isDarkTheme}>
             <NavMobileContainer>
               {isDarkTheme ? (
-                <NavImage
-                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png"
-                  alt="website logo"
-                />
+                <Link to="/">
+                  <NavImage
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png"
+                    alt="nxt watch logo"
+                  />
+                </Link>
               ) : (
-                <NavImage
-                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-                  alt="website logo"
-                />
+                <Link to="/">
+                  <NavImage
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                    alt="nxt watch logo"
+                  />
+                </Link>
               )}
 
               <NavItemsMobileContainer>
@@ -57,23 +73,34 @@ const Header = props => {
                 <HamBurgerIconButton>
                   <GiHamburgerMenuIcon isdarktheme={isDarkTheme.toString()} />
                 </HamBurgerIconButton>
-                <LogoutIconButton onClick={logoutClicked}>
-                  <FiLogOutIcon isdarktheme={isDarkTheme.toString()} />
-                </LogoutIconButton>
+                <Popup
+                  modal
+                  trigger={
+                    <LogoutIconButton type="button">
+                      <FiLogOutIcon isdarktheme={isDarkTheme.toString()} />
+                    </LogoutIconButton>
+                  }
+                >
+                  <h1>Hello</h1>
+                </Popup>
               </NavItemsMobileContainer>
             </NavMobileContainer>
 
             <NavWebContainer>
               {isDarkTheme ? (
-                <NavWebImage
-                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png"
-                  alt="website logo"
-                />
+                <Link to="/">
+                  <NavWebImage
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png"
+                    alt="nxt watch logo"
+                  />
+                </Link>
               ) : (
-                <NavWebImage
-                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-                  alt="website logo"
-                />
+                <Link to="/">
+                  <NavWebImage
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                    alt="nxt watch logo"
+                  />
+                </Link>
               )}
 
               <NavItemsWebContainer>
@@ -86,9 +113,32 @@ const Header = props => {
                     alt="profile"
                   />
                 </HamBurgerIconButton>
-                <LogoutIconButton onClick={logoutClicked}>
-                  Logout
-                </LogoutIconButton>
+                <PopupContainer>
+                  <Popup
+                    modal
+                    trigger={
+                      <LogoutIconButton onClick={logoutClicked}>
+                        Logout
+                      </LogoutIconButton>
+                    }
+                  >
+                    {close => (
+                      <PopupDisplayContainer isDarkTheme={isDarkTheme}>
+                        <PopupHeading isDarkTheme={isDarkTheme}>
+                          Are you sure you want to logout?
+                        </PopupHeading>
+                        <PopupButtons>
+                          <CancelButton onClick={() => close()}>
+                            Cancel
+                          </CancelButton>
+                          <ConfirmButton onClick={logoutClicked}>
+                            Confirm
+                          </ConfirmButton>
+                        </PopupButtons>
+                      </PopupDisplayContainer>
+                    )}
+                  </Popup>
+                </PopupContainer>
               </NavItemsWebContainer>
             </NavWebContainer>
           </NavbarHeader>

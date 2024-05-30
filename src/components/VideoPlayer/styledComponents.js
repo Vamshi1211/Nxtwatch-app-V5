@@ -8,14 +8,14 @@ export const VideoPlayerContainer = styled.div`
 `
 export const ReactMobileVideoPlayer = styled(ReactPlayer)`
   display: block;
-  @media screen and (min-width: 576px) {
+  @media screen and (min-width: 768px) {
     display: none;
   }
 `
 
 export const ReactWebVideoPlayer = styled(ReactPlayer)`
   display: none;
-  @media screen and (min-width: 576px) {
+  @media screen and (min-width: 768px) {
     display: block;
   }
 `
