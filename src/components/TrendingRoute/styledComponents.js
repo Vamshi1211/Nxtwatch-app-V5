@@ -11,7 +11,7 @@ export const TrendingVideoItemContainer = styled(HomeContentContainer)`
 `
 export const TrendingLogoAndTextContainer = styled.div`
   width: 100%;
-  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f9f9f9')};
+  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f1f1f1')};
   display: flex;
   align-items: center;
   padding-top: 15px;

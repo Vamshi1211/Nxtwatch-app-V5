@@ -165,12 +165,12 @@ class HomeContent extends Component {
       {isDarkTheme ? (
         <NoVideosImage
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png"
-          alt="failure"
+          alt="failure view"
         />
       ) : (
         <NoVideosImage
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-          alt="failure"
+          alt="failure view"
         />
       )}
 
@@ -211,9 +211,12 @@ class HomeContent extends Component {
           const {isDarkTheme} = value
           return (
             <>
-              <HomeContentContainer isDarkTheme={isDarkTheme}>
+              <HomeContentContainer
+                isDarkTheme={isDarkTheme}
+                data-testid="home"
+              >
                 {bannerImage && (
-                  <BannerImageContainer>
+                  <BannerImageContainer data-testid="banner">
                     <BannerTextContainer>
                       <BannerImage
                         src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"

@@ -24,16 +24,24 @@ import {
   PopupButtons,
   CancelButton,
   ConfirmButton,
+  PopupMenuContainer,
+  HomeNavItemContainer,
+  HomeLogo,
+  HomeText,
+  NavHomeListItem,
+  NavTrendingListItem,
+  NavGamingListItem,
+  NavSavedListItem,
+  TrendingLogo,
+  GamingLogo,
+  SavedLogo,
 } from './styledComponents'
 
-const overlayStyles = {
-  backgroundColor: '#ffff',
-  width: '40vh',
-}
-
 const Header = props => {
+  const {history, match} = props
+  const {path} = match
+
   const logoutClicked = () => {
-    const {history} = props
     history.replace('./login')
     Cookies.remove('jwt_token')
   }
@@ -42,6 +50,11 @@ const Header = props => {
     <ThemeContext.Consumer>
       {value => {
         const {isDarkTheme, themeChange} = value
+
+        const overlayStyles = {
+          backgroundColor: isDarkTheme ? '#181818' : '#ffffff',
+        }
+        const home = true
 
         const onClickThemeChange = () => {
           themeChange()
@@ -54,34 +67,120 @@ const Header = props => {
                 <Link to="/">
                   <NavImage
                     src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png"
-                    alt="nxt watch logo"
+                    alt="website logo"
                   />
                 </Link>
               ) : (
                 <Link to="/">
                   <NavImage
                     src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-                    alt="nxt watch logo"
+                    alt="website logo"
                   />
                 </Link>
               )}
 
               <NavItemsMobileContainer>
-                <ThemeChangeControllerButton onClick={onClickThemeChange}>
+                <ThemeChangeControllerButton
+                  onClick={onClickThemeChange}
+                  data-testid="theme"
+                >
                   <IoMoon isdarktheme={isDarkTheme.toString()} />
                 </ThemeChangeControllerButton>
-                <HamBurgerIconButton>
-                  <GiHamburgerMenuIcon isdarktheme={isDarkTheme.toString()} />
-                </HamBurgerIconButton>
+                <PopupContainer
+                  modal
+                  trigger={
+                    <HamBurgerIconButton>
+                      <GiHamburgerMenuIcon
+                        isdarktheme={isDarkTheme.toString()}
+                      />
+                    </HamBurgerIconButton>
+                  }
+                  overlayStyle={overlayStyles}
+                  isDarkTheme={isDarkTheme}
+                >
+                  {close => (
+                    <PopupMenuContainer isDarkTheme={isDarkTheme}>
+                      <NavHomeListItem
+                        home={home}
+                        isDarkTheme={isDarkTheme}
+                        path={path}
+                      >
+                        <HomeNavItemContainer to="/" onClick={() => close()}>
+                          <HomeLogo
+                            isdarktheme={isDarkTheme.toString()}
+                            path={path}
+                          />
+                          <HomeText isDarkTheme={isDarkTheme}>Home</HomeText>
+                        </HomeNavItemContainer>
+                      </NavHomeListItem>
+                      <NavTrendingListItem
+                        isDarkTheme={isDarkTheme}
+                        path={path}
+                      >
+                        <HomeNavItemContainer
+                          to="/trending"
+                          onClick={() => close()}
+                        >
+                          <TrendingLogo
+                            path={path}
+                            isdarktheme={isDarkTheme.toString()}
+                          />
+                          <HomeText isDarkTheme={isDarkTheme}>
+                            Trending
+                          </HomeText>
+                        </HomeNavItemContainer>
+                      </NavTrendingListItem>
+                      <NavGamingListItem isDarkTheme={isDarkTheme} path={path}>
+                        <HomeNavItemContainer
+                          to="/gaming"
+                          onClick={() => close()}
+                        >
+                          <GamingLogo
+                            path={path}
+                            isdarktheme={isDarkTheme.toString()}
+                          />
+                          <HomeText isDarkTheme={isDarkTheme}>Gaming</HomeText>
+                        </HomeNavItemContainer>
+                      </NavGamingListItem>
+                      <NavSavedListItem isDarkTheme={isDarkTheme} path={path}>
+                        <HomeNavItemContainer
+                          to="/saved-videos"
+                          onClick={() => close()}
+                        >
+                          <SavedLogo
+                            path={path}
+                            isdarktheme={isDarkTheme.toString()}
+                          />
+                          <HomeText isDarkTheme={isDarkTheme}>Saved</HomeText>
+                        </HomeNavItemContainer>
+                      </NavSavedListItem>
+                    </PopupMenuContainer>
+                  )}
+                </PopupContainer>
+
                 <Popup
                   modal
                   trigger={
-                    <LogoutIconButton type="button">
+                    <LogoutIconButton type="button" onClick={logoutClicked}>
                       <FiLogOutIcon isdarktheme={isDarkTheme.toString()} />
                     </LogoutIconButton>
                   }
                 >
-                  <h1>Hello</h1>
+                  {close => (
+                    <PopupDisplayContainer isDarkTheme={isDarkTheme}>
+                      <PopupHeading isDarkTheme={isDarkTheme}>
+                        Are you sure you want to logout?
+                      </PopupHeading>
+                      <PopupButtons>
+                        <CancelButton onClick={() => close()}>
+                          Cancel
+                        </CancelButton>
+                        <ConfirmButton onClick={logoutClicked}>
+                          Confirm
+                        </ConfirmButton>
+                      </PopupButtons>
+                    </PopupDisplayContainer>
+                  )}
                 </Popup>
               </NavItemsMobileContainer>
             </NavMobileContainer>
@@ -113,32 +212,31 @@ const Header = props => {
                     alt="profile"
                   />
                 </HamBurgerIconButton>
-                <PopupContainer>
-                  <Popup
-                    modal
-                    trigger={
-                      <LogoutIconButton onClick={logoutClicked}>
-                        Logout
-                      </LogoutIconButton>
-                    }
-                  >
-                    {close => (
-                      <PopupDisplayContainer isDarkTheme={isDarkTheme}>
-                        <PopupHeading isDarkTheme={isDarkTheme}>
-                          Are you sure you want to logout?
-                        </PopupHeading>
-                        <PopupButtons>
-                          <CancelButton onClick={() => close()}>
-                            Cancel
-                          </CancelButton>
-                          <ConfirmButton onClick={logoutClicked}>
-                            Confirm
-                          </ConfirmButton>
-                        </PopupButtons>
-                      </PopupDisplayContainer>
-                    )}
-                  </Popup>
-                </PopupContainer>
+
+                <Popup
+                  modal
+                  trigger={
+                    <LogoutIconButton onClick={logoutClicked}>
+                      Logout
+                    </LogoutIconButton>
+                  }
+                >
+                  {close => (
+                    <PopupDisplayContainer isDarkTheme={isDarkTheme}>
+                      <PopupHeading isDarkTheme={isDarkTheme}>
+                        Are you sure you want to logout?
+                      </PopupHeading>
+                      <PopupButtons>
+                        <CancelButton onClick={() => close()}>
+                          Cancel
+                        </CancelButton>
+                        <ConfirmButton onClick={logoutClicked}>
+                          Confirm
+                        </ConfirmButton>
+                      </PopupButtons>
+                    </PopupDisplayContainer>
+                  )}
+                </Popup>
               </NavItemsWebContainer>
             </NavWebContainer>
           </NavbarHeader>

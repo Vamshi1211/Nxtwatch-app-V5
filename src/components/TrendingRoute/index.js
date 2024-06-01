@@ -88,7 +88,10 @@ class TrendingRoute extends Component {
 
     return (
       <>
-        <TrendingLogoAndTextContainer isDarkTheme={isDarkTheme}>
+        <TrendingLogoAndTextContainer
+          isDarkTheme={isDarkTheme}
+          data-testid="banner"
+        >
           <TrendingLogoContainer isDarkTheme={isDarkTheme}>
             <TrendingImage />
           </TrendingLogoContainer>
@@ -108,12 +111,12 @@ class TrendingRoute extends Component {
       {isDarkTheme ? (
         <NoVideosImage
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png"
-          alt="failure"
+          alt="failure view"
         />
       ) : (
         <NoVideosImage
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-          alt="failure"
+          alt="failure view"
         />
       )}
 
@@ -149,14 +152,17 @@ class TrendingRoute extends Component {
     return (
       <>
         <Header />
-        <TrendingVideosContainer>
+        <TrendingVideosContainer data-testid="trending">
           <SideNavBar />
           <ThemeContext.Consumer>
             {value => {
               const {isDarkTheme} = value
 
               return (
-                <TrendingVideoItemContainer isDarkTheme={isDarkTheme}>
+                <TrendingVideoItemContainer
+                  isDarkTheme={isDarkTheme}
+                  data-testid="trending"
+                >
                   {this.renderViews(isDarkTheme)}
                 </TrendingVideoItemContainer>
               )

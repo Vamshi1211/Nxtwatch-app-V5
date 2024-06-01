@@ -36,7 +36,7 @@ const TrendingVideos = props => {
         return (
           <TrendingVideoListItem>
             <VideoLink to={`/videos/${id}`}>
-              <TrendingVideoImage src={thumbnailUrl} alt="thumbnail" />
+              <TrendingVideoImage src={thumbnailUrl} alt="video thumbnail" />
 
               <TrendingVideoAndProfileContainer>
                 <TrendingProfileImage

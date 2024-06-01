@@ -1,13 +1,171 @@
 import {Component} from 'react'
+import Cookies from 'js-cookie'
 import Header from '../Header'
 import SideNavBar from '../SideNavBar'
 
+import GamingVideos from '../GamingVideos'
+
+import {
+  GamingRouteContainer,
+  GamingContainer,
+  GamingLogoAndTextContainer,
+  GamingLogoContainer,
+  GamingImage,
+  GamingHeading,
+  GamingRouteItemContainer,
+} from './styledComponents'
+
+import {
+  LoaderContainer,
+  LoaderSpinner,
+  NoVideosContainer,
+  NoVideosImage,
+  NoVideosText,
+  NoVideoTryAgain,
+  NoVideosDes,
+  NoVideosRetryButton,
+} from '../HomeContent/styledComponents'
+
+import ThemeContext from '../../context/ThemeContext'
+
+const apiStatusValue = {
+  initial: 'INITIAL',
+  inProgress: 'INPROGRESS',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+}
+
 class GamingRoute extends Component {
+  state = {apiStatus: apiStatusValue.initial, gamingVideosList: []}
+
+  componentDidMount() {
+    this.getGamingVideos()
+  }
+
+  getGamingVideos = async () => {
+    this.setState({apiStatus: apiStatusValue.inProgress})
+    const jwtToken = Cookies.get('jwt_token')
+    const url = 'https://apis.ccbp.in/videos/gaming'
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
+
+    const response = await fetch(url, options)
+    if (response.ok === true) {
+      const fetchedData = await response.json()
+      const updatedData = fetchedData.videos.map(eachItem => ({
+        id: eachItem.id,
+        thumbnailUrl: eachItem.thumbnail_url,
+        viewCount: eachItem.view_count,
+        title: eachItem.title,
+      }))
+
+      this.setState({
+        gamingVideosList: updatedData,
+        apiStatus: apiStatusValue.success,
+      })
+    } else {
+      this.setState({apiStatus: apiStatusValue.failure})
+    }
+  }
+
+  renderLoadingView = isDarkTheme => (
+    <LoaderContainer data-testid="loader">
+      <LoaderSpinner
+        color={isDarkTheme ? '#ffffff' : '#0f0f0f'}
+        type="ThreeDots"
+        height="50"
+        width="50"
+      />
+    </LoaderContainer>
+  )
+
+  renderGamingView = isDarkTheme => {
+    const {gamingVideosList} = this.state
+
+    return (
+      <>
+        <GamingLogoAndTextContainer
+          isDarkTheme={isDarkTheme}
+          data-testid="banner"
+        >
+          <GamingLogoContainer isDarkTheme={isDarkTheme}>
+            <GamingImage />
+          </GamingLogoContainer>
+          <GamingHeading isDarkTheme={isDarkTheme}>Gaming</GamingHeading>
+        </GamingLogoAndTextContainer>
+        <GamingRouteItemContainer>
+          {gamingVideosList.map(eachItem => (
+            <GamingVideos key={eachItem.id} eachVideo={eachItem} />
+          ))}
+        </GamingRouteItemContainer>
+      </>
+    )
+  }
+
+  renderFailureView = isDarkTheme => (
+    <NoVideosContainer>
+      {isDarkTheme ? (
+        <NoVideosImage
+          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png"
+          alt="failure view"
+        />
+      ) : (
+        <NoVideosImage
+          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+          alt="failure view"
+        />
+      )}
+
+      <NoVideosText isDarkTheme={isDarkTheme}>
+        Oops! Something Went Wrong
+      </NoVideosText>
+      <NoVideosDes>
+        We are having some trouble to complete your request.
+      </NoVideosDes>
+      <NoVideoTryAgain>Please try again.</NoVideoTryAgain>
+      <NoVideosRetryButton type="button" onClick={this.retryClicked}>
+        Retry
+      </NoVideosRetryButton>
+    </NoVideosContainer>
+  )
+
+  renderViews = isDarkTheme => {
+    const {apiStatus} = this.state
+
+    switch (apiStatus) {
+      case apiStatusValue.inProgress:
+        return this.renderLoadingView(isDarkTheme)
+      case apiStatusValue.success:
+        return this.renderGamingView(isDarkTheme)
+      case apiStatusValue.failure:
+        return this.renderFailureView(isDarkTheme)
+      default:
+        return null
+    }
+  }
+
   render() {
     return (
       <>
         <Header />
-        <SideNavBar />
+        <GamingRouteContainer data-testid="gaming">
+          <SideNavBar />
+          <ThemeContext.Consumer>
+            {value => {
+              const {isDarkTheme} = value
+
+              return (
+                <GamingContainer isDarkTheme={isDarkTheme} data-testid="gaming">
+                  {this.renderViews(isDarkTheme)}
+                </GamingContainer>
+              )
+            }}
+          </ThemeContext.Consumer>
+        </GamingRouteContainer>
       </>
     )
   }

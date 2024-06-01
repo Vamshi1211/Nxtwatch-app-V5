@@ -56,7 +56,6 @@ class VideoDetails extends Component {
     videoDetails: {},
     isLike: false,
     isDislike: false,
-    isSave: false,
   }
 
   componentDidMount() {
@@ -133,9 +132,22 @@ class VideoDetails extends Component {
     }))
   }
 
-  renderVideoDetails = isDarkTheme => {
-    const {videoDetails, isLike, isDislike, isSave} = this.state
+  renderVideoDetails = (isDarkTheme, savedList, onClickSaved) => {
+    const {match} = this.props
+    const {params} = match
+    const {id} = params
+    const {videoDetails, isLike, isDislike} = this.state
     const {description, viewCount, publishedAt, channel, title} = videoDetails
+    const index = savedList.findIndex(eachVideo => eachVideo.id === id)
+
+    let isSaved = null
+
+    if (index === -1) {
+      isSaved = false
+    } else {
+      isSaved = true
+    }
+
     return (
       <>
         <VideoPlayer videoDetails={videoDetails} />
@@ -160,7 +172,7 @@ class VideoDetails extends Component {
                   onClick={this.likeButtonClicked}
                   isLike={isLike}
                 >
-                  <LikeIcon isLike={isLike} />
+                  <LikeIcon islike={isLike.toString()} />
                   <LikeIconParagraph isLike={isLike}>Like</LikeIconParagraph>
                 </LikeButton>
               </LikeDisLikeSaveContainer>
@@ -171,7 +183,7 @@ class VideoDetails extends Component {
                   onClick={this.disLikeButtonClicked}
                   isDislike={isDislike}
                 >
-                  <DisLikeIcon isDislike={isDislike} />
+                  <DisLikeIcon isdislike={isDislike.toString()} />
                   <DisLikeParagraph isDislike={isDislike}>
                     Dislike
                   </DisLikeParagraph>
@@ -181,11 +193,13 @@ class VideoDetails extends Component {
               <LikeDisLikeSaveContainer>
                 <SavedButton
                   type="button"
-                  onClick={this.saveButtonClicked}
-                  isSave={isSave}
+                  onClick={onClickSaved}
+                  isSave={isSaved}
                 >
-                  <SavedIcon isSave={isSave} />
-                  <SavedParagraph isSave={isSave}>Save</SavedParagraph>
+                  <SavedIcon issave={isSaved.toString()} />
+                  <SavedParagraph isSave={isSaved}>
+                    {isSaved ? 'Saved' : 'Save'}
+                  </SavedParagraph>
                 </SavedButton>
               </LikeDisLikeSaveContainer>
             </VideoPlayerLikesAndSaveContainer>
@@ -227,12 +241,12 @@ class VideoDetails extends Component {
       {isDarkTheme ? (
         <NoVideosImage
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png"
-          alt="failure"
+          alt="failure view"
         />
       ) : (
         <NoVideosImage
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-          alt="failure"
+          alt="failure view"
         />
       )}
 
@@ -249,13 +263,13 @@ class VideoDetails extends Component {
     </NoVideosContainer>
   )
 
-  renderViews = isDarkTheme => {
+  renderViews = (isDarkTheme, savedList, onClickSaved) => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusValue.inProgress:
         return this.renderLoadingView(isDarkTheme)
       case apiStatusValue.success:
-        return this.renderVideoDetails(isDarkTheme)
+        return this.renderVideoDetails(isDarkTheme, savedList, onClickSaved)
       case apiStatusValue.failure:
         return this.renderFailureView(isDarkTheme)
       default:
@@ -264,14 +278,21 @@ class VideoDetails extends Component {
   }
 
   render() {
+    const {videoDetails} = this.state
     return (
       <ThemeContext.Consumer>
         {value => {
-          const {isDarkTheme} = value
+          const {isDarkTheme, savedList, addVideo} = value
+          const onClickSaved = () => {
+            addVideo(videoDetails)
+          }
 
           return (
-            <VideoItemContainer isDarkTheme={isDarkTheme}>
-              {this.renderViews(isDarkTheme)}
+            <VideoItemContainer
+              isDarkTheme={isDarkTheme}
+              data-testid="videoItemDetails"
+            >
+              {this.renderViews(isDarkTheme, savedList, onClickSaved)}
             </VideoItemContainer>
           )
         }}

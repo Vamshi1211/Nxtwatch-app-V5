@@ -73,15 +73,15 @@ export const VideoPlayerParagraph = styled.p`
 `
 
 export const LikeIconParagraph = styled(VideoPlayerParagraph)`
-  color: ${props => (props.isLike ? ' #00306e' : '')};
+  color: ${props => (props.isLike ? '#2563eb' : '#64748b')};
 `
 
 export const DisLikeParagraph = styled(VideoPlayerParagraph)`
-  color: ${props => (props.isDislike ? ' #00306e' : '')};
+  color: ${props => (props.isDislike ? '#2563eb' : '#64748b')};
 `
 
 export const SavedParagraph = styled(VideoPlayerParagraph)`
-  color: ${props => (props.isSave ? ' #00306e' : '')};
+  color: ${props => (props.isSave ? '#2563eb' : '#64748b')};
 `
 
 export const VideoPlayerDateListContainer = styled.li`
@@ -110,7 +110,7 @@ export const LikeIcon = styled(AiOutlineLike)`
   margin-right: 6px;
   padding-left: 0px;
   margin-left: 0px;
-  color: ${props => (props.isLike ? ' #00306e' : '')};
+  color: ${props => (props.islike === 'true' ? '#2563eb' : '')};
   @media screen and (min-width: 768px) {
     margin-right: 8px;
   }
@@ -119,7 +119,7 @@ export const DisLikeIcon = styled(AiOutlineDislike)`
   height: 20px;
   width: 20px;
   margin-right: 6px;
-  color: ${props => (props.isDislike ? ' #00306e' : '')};
+  color: ${props => (props.isdislike === 'true' ? '#2563eb' : '')};
   @media screen and (min-width: 768px) {
     margin-right: 8px;
   }
@@ -129,7 +129,7 @@ export const SavedIcon = styled(BiListPlus)`
   height: 20px;
   width: 20px;
   margin-right: 6px;
-  color: ${props => (props.isSave ? ' #00306e' : '')};
+  color: ${props => (props.issave === 'true' ? '#2563eb' : '')};
   @media screen and (min-width: 768px) {
     margin-right: 8px;
   }
@@ -137,7 +137,7 @@ export const SavedIcon = styled(BiListPlus)`
 
 export const LikeButton = styled.button`
   cursor: pointer;
-  color: ${props => (props.isLike ? ' #00306e' : '#475569')};
+  color: ${props => (props.isLike ? '#2563eb' : '#64748b')};
   font-family: 'Roboto';
   font-weight: 600;
   display: flex;
@@ -155,11 +155,13 @@ export const LikeButton = styled.button`
 `
 
 export const DisLikeButton = styled(LikeButton)`
-  color: ${props => (props.isDislike ? ' #00306e' : '#475569')};
+  color: ${props => (props.isDislike ? '#2563eb' : '#64748b')};
+  outline: none;
 `
 
 export const SavedButton = styled(LikeButton)`
-  color: ${props => (props.isSave ? ' #00306e' : '#475569')};
+  color: ${props => (props.isSave ? '#2563eb' : '#64748b')};
+  outline: none;
 `
 
 export const HorizontalLine = styled.hr`
